@@ -64,6 +64,7 @@ emailRoutes.post('/:id/categorize', async (req, res) => {
     prompt = prompt.replace('{from_name}', email.from_name);
     prompt = prompt.replace('{from_email}', email.from_email);
     prompt = prompt.replace('{body}', email.body);
+    prompt = `${prompt}\n\n[ACTION:CATEGORY]`;
     
     // Call LLM
     const category = await callLLM(prompt);
@@ -97,6 +98,7 @@ emailRoutes.post('/:id/actions', async (req, res) => {
     prompt = prompt.replace('{from_name}', email.from_name);
     prompt = prompt.replace('{from_email}', email.from_email);
     prompt = prompt.replace('{body}', email.body);
+    prompt = `${prompt}\n\n[ACTION:ACTIONS]`;
     
     const actions = await callLLM(prompt);
     res.json({ actions: actions.trim() });
@@ -125,6 +127,7 @@ emailRoutes.post('/:id/reply', async (req, res) => {
     prompt = prompt.replace('{from_name}', email.from_name);
     prompt = prompt.replace('{from_email}', email.from_email);
     prompt = prompt.replace('{body}', email.body);
+    prompt = `${prompt}\n\n[ACTION:REPLY]`;
     
     const replyBody = await callLLM(prompt);
     res.json({ replyBody: replyBody.trim() });
@@ -153,6 +156,7 @@ emailRoutes.post('/:id/summarize', async (req, res) => {
     prompt = prompt.replace('{from_name}', email.from_name);
     prompt = prompt.replace('{from_email}', email.from_email);
     prompt = prompt.replace('{body}', email.body);
+    prompt = `${prompt}\n\n[ACTION:SUMMARY]`;
     
     const summary = await callLLM(prompt);
     res.json({ summary: summary.trim() });
@@ -181,6 +185,7 @@ emailRoutes.post('/:id/priority', async (req, res) => {
     prompt = prompt.replace('{from_name}', email.from_name);
     prompt = prompt.replace('{from_email}', email.from_email);
     prompt = prompt.replace('{body}', email.body);
+    prompt = `${prompt}\n\n[ACTION:PRIORITY]`;
     
     const priority = await callLLM(prompt);
     
@@ -193,5 +198,7 @@ emailRoutes.post('/:id/priority', async (req, res) => {
     res.status(500).json({ error: 'Failed to assess priority' });
   }
 });
+
+
 
 

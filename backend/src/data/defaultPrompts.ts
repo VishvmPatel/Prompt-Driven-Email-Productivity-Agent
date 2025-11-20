@@ -1,13 +1,6 @@
 import { getDatabase } from '../db/database';
 
-export function initDefaultPrompts(): void {
-  const db = getDatabase();
-  const insert = db.prepare(`
-    INSERT INTO prompt_templates (name, description, template, type, updated_at)
-    VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
-  `);
-  
-  const prompts = [
+const defaultPrompts = [
     {
       name: "Email Categorization",
       description: "Categorize emails into predefined categories",
@@ -42,20 +35,23 @@ List all actionable items in a clear, concise format. If there are no actions, r
       type: "action_extraction"
     },
     {
-      name: "Auto-Reply Draft",
-      description: "Generate a professional reply draft",
-      template: `Generate a professional email reply for the following email. The reply should be:
-- Polite and professional
-- Address all points mentioned in the original email
-- Appropriate in tone and length
-- Ready to send (but user will review before sending)
+      name: "Auto Reply Draft",
+      description: "Generate a polite, context-aware reply draft that the user can review and edit before sending",
+      template: `You are an assistant that writes professional email replies on behalf of the user.
+
+When drafting the reply:
+- Be concise, polite, and in a helpful tone
+- Reference key details from the original message
+- Address any questions or requests explicitly
+- Thank the sender when appropriate
+- Never promise to send emails automatically; the user will review and send manually
 
 Original Email:
 Subject: {subject}
 From: {from_name} <{from_email}>
 Body: {body}
 
-Generate only the reply body text.`,
+Draft a reply email body only (no subject line).`,
       type: "reply_draft"
     },
     {
@@ -91,20 +87,28 @@ Respond with only the priority level (high, medium, or low).`,
       type: "priority"
     }
   ];
-  
-  const insertMany = db.transaction((prompts) => {
-    for (const prompt of prompts) {
-      insert.run(
-        prompt.name,
-        prompt.description,
-        prompt.template,
-        prompt.type
-      );
+
+export function initDefaultPrompts(): void {
+  const db = getDatabase();
+  const insert = db.prepare(`
+    INSERT INTO prompt_templates (name, description, template, type, updated_at)
+    VALUES (?, ?, ?, ?, CURRENT_TIMESTAMP)
+  `);
+  const existsStmt = db.prepare(`SELECT COUNT(*) as count FROM prompt_templates WHERE name = ?`);
+
+  const upsertDefaults = db.transaction(() => {
+    for (const prompt of defaultPrompts) {
+      const exists = existsStmt.get(prompt.name) as { count: number };
+      if (exists.count === 0) {
+        insert.run(prompt.name, prompt.description, prompt.template, prompt.type);
+      }
     }
   });
-  
-  insertMany(prompts);
-  console.log(`✅ Initialized ${prompts.length} default prompt templates`);
+
+  upsertDefaults();
+  console.log("✅ Ensured default prompt templates are present");
 }
+
+
 
 
