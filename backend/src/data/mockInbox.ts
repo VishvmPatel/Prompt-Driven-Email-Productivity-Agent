@@ -1,5 +1,17 @@
 import { getDatabase } from '../db/database';
 
+type EmailData = {
+  subject: string;
+  from_email: string;
+  from_name: string;
+  to_email: string;
+  body: string;
+  date: string;
+  read: number;
+  category: string | null;
+  priority: string | null;
+};
+
 export function initMockInbox(): void {
   const db = getDatabase();
   const insert = db.prepare(`
@@ -7,7 +19,7 @@ export function initMockInbox(): void {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
   
-  const emails = [
+  const emails: EmailData[] = [
     {
       subject: "Meeting Request: Q4 Planning Discussion",
       from_email: "sarah.johnson@company.com",
@@ -285,7 +297,7 @@ export function initMockInbox(): void {
     }
   ];
   
-  const insertMany = db.transaction((emails: typeof emails) => {
+  const insertMany = db.transaction((emails: EmailData[]) => {
     for (const email of emails) {
       insert.run(
         email.subject,
