@@ -8,7 +8,7 @@ type EmailStatus = {
 type EmailDetailProps = {
   email: Email | null
   status?: EmailStatus
-  onToolbarAction?: (action: 'save' | 'pin' | 'archive' | 'share') => void
+  onToolbarAction?: (action: 'pin' | 'archive') => void
 }
 
 const toolbarActions = [

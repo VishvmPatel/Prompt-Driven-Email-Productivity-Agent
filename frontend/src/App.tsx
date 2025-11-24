@@ -165,7 +165,7 @@ function App() {
               email={selectedEmail}
               status={selectedEmail ? emailStatuses[selectedEmail.id] : undefined}
               onToolbarAction={
-                selectedEmail ? (action) => handleEmailToolbarAction(selectedEmail, action) : undefined
+                selectedEmail ? (action: 'pin' | 'archive') => handleEmailToolbarAction(selectedEmail, action) : undefined
               }
             />
             {selectedEmail && (
