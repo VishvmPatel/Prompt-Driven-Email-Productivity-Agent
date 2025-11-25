@@ -52,7 +52,7 @@ Create `backend/.env`:
 PORT=3001
 FRONTEND_URL=http://localhost:3000
 GEMINI_API_KEY=your-api-key-here  # Optional
-GEMINI_MODEL=gemini-pro            # Optional
+GEMINI_MODEL=your-gemini-model    # Optional
 USE_MOCK_LLM=false                 # Set to true to use mock LLM
 ```
 
@@ -110,7 +110,7 @@ Ask questions about selected emails using the chat interface for contextual assi
    NODE_ENV=production
    FRONTEND_URL=https://your-frontend.vercel.app
    GEMINI_API_KEY=your-api-key
-   GEMINI_MODEL=gemini-pro
+   GEMINI_MODEL=your-gemini-model
    USE_MOCK_LLM=false
    ```
 
@@ -271,12 +271,6 @@ Both frontend and backend run on Vercel. These are the live URLs:
 - Never commit `.env` files to version control
 - Use environment variables for API keys in production
 - Set `FRONTEND_URL` to exact domain in production (avoid wildcards)
-
----
-
-## 📝 License
-
-MIT License
 
 ---
 
