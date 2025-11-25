@@ -197,8 +197,8 @@ npm run preview          # Preview production build
 
 Both frontend and backend run on Vercel. These are the live URLs:
 
-- Frontend: `https://prompt-driven-email-productivity-agent-c28g-h92tqnnr2.vercel.app`
-- Backend (API): `https://prompt-driven-email-productivity-ag-sand.vercel.app`
+- Frontend: `https://prompt-driven-email-productivity-ag-two.vercel.app/`
+- Backend (API): `https://prompt-driven-email-productivity-ag-sand.vercel.app/`
 
 ### Backend (Vercel)
 - **Root Directory**: `backend/`
