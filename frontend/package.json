@@ -1,7 +1,7 @@
 {
   "name": "email-agent-frontend",
   "version": "1.0.0",
-  "description": "Frontend for Email Productivity Agent",
+  "description": "Smart Inbox - Frontend",
   "type": "module",
   "scripts": {
     "dev": "vite",

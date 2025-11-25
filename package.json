@@ -1,7 +1,7 @@
 {
-  "name": "prompt-driven-email-agent",
+  "name": "smart-inbox",
   "version": "1.0.0",
-  "description": "Prompt-Driven Email Productivity Agent",
+  "description": "Smart Inbox - AI-Powered Email Productivity Agent",
   "scripts": {
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd frontend && npm run dev",

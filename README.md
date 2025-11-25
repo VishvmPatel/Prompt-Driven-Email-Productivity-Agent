@@ -1,4 +1,4 @@
-# 📧 Prompt-Driven Email Productivity Agent
+# 📧 Smart Inbox
 
 An intelligent email management system powered by Google Gemini AI for categorization, summarization, and intelligent reply generation.
 

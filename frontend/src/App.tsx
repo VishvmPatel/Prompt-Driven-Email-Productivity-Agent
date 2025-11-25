@@ -124,7 +124,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col gap-4">
           <div>
             <p className="text-sm uppercase tracking-[0.3em] text-white/70">Inbox Intelligence</p>
-            <h1 className="text-3xl font-semibold">Prompt-Driven Email Productivity Agent</h1>
+            <h1 className="text-3xl font-semibold">Smart Inbox</h1>
             <p className="text-base text-white/80 mt-1">
               Manage a mock inbox, curate prompt templates, run AI workflows, and keep replies in draft mode.
             </p>
