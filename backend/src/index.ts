@@ -21,9 +21,39 @@ const PORT = process.env.PORT || 3001;
 
 // Apply a strict-but-configurable CORS policy so production deployments
 // can lock traffic to the UI origin while local development stays open.
+// For Vercel, we allow all Vercel preview URLs since they change on each deployment.
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || '*',
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) {
+      return callback(null, true);
+    }
+    
+    // Always allow Vercel preview URLs (they change on each deployment)
+    if (/^https:\/\/.*\.vercel\.app$/.test(origin)) {
+      return callback(null, true);
+    }
+    
+    // Allow localhost for development
+    if (/^http:\/\/localhost:\d+$/.test(origin)) {
+      return callback(null, true);
+    }
+    
+    // If FRONTEND_URL is set, check for exact match
+    if (process.env.FRONTEND_URL) {
+      if (origin === process.env.FRONTEND_URL) {
+        return callback(null, true);
+      }
+    } else {
+      // If FRONTEND_URL is not set, allow all (development mode)
+      return callback(null, true);
+    }
+    
+    callback(new Error('Not allowed by CORS'));
+  },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 };
 
 app.use(cors(corsOptions));
@@ -54,7 +84,13 @@ app.get('/api/llm/status', (req: express.Request, res: express.Response) => {
 });
 
 // Middleware to ensure database is initialized on each request (for serverless)
+// Skip database init for OPTIONS requests (CORS preflight)
 app.use(async (req, res, next) => {
+  // Skip database initialization for OPTIONS requests (CORS preflight)
+  if (req.method === 'OPTIONS') {
+    return next();
+  }
+  
   try {
     const { ensureDatabase } = await import('./db/database');
     await ensureDatabase();
